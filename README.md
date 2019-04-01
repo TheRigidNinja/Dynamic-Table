@@ -2,48 +2,9 @@ A react website that displays data dynamically on a table
 # code-test
 
 
-
 # Daily logs / Timestamp
+✘
+✔
 
+<p>✔ Figure the best way to present your activity logs<br>✔ Researched on how to make a grid table on Github Readme file<br>✔ Create a react app and get the environment ready for development<br>✔ Create a workspace on Adobe XD and getting it prepared for a markup design<br>✔ Email and ask the following questions:<br>      - Can I use Bootstrap or any other CSS frameworks?<br>      - How should a user navigate from /trades to /withdraws and vice versa?<br>✔ Go on Draw.io and make a workspace to draw a flow chart on how for the backend of how the systemwill function.<br>✘ Seek inspiration on the web about data tables and pick, one or 2 things on there most commonstyles.<br>✔ Make sure to go over the challenge description again for, better understanding.<br>✘ Ask more question beyond the two obvious ones.<br>✔ Spend some time trying to get this logs in order / Make, sure the presentation looks good<br>
 
-
-
-
-
-## Day 1 
-Duration
--------
-|Goals|
--------                             
-•Figure the best way to present your activity logs                               
-•Researched on how to make a grid                           
-  table on github Readme file                          
-•Create a react app and basically get                          
-  the inviroment ready for development                          
-•Create a workspace on Adobe XD and getting                           
-  it ready for a markup design                           
-•Email and ask the following questions:                          
-  - Can i use Bootstrap or any other css extend                           
-    frameworks?                          
-  - How should a user navigate on /withdraws or                           
-    back and forth?                          
-•Go on drawio and also make the workspace, to drawa flow                          
-  chart on how th backend of the system will function                           
-•Seek insparation on the web about data tables and pick                           
-  one or 2 things on there most common styles                          
-•Make sure to go over the challage discription again for                          
-  better understanding                          
-•As more question beyound the two obvouse ones                          
-•Spend some time trying to get this logs in order / Make                          
-  sure the presation looks good                            
-          
-----------------------------------------------------------------------------------------------------
- 3   |   
- 4   |
- 5   |
- 6   |
- 7   |
- Due |
-
-
- 
