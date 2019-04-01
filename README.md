@@ -5,10 +5,10 @@ A react website that displays data dynamically on a table
 
 # Daily logs / Timestamp
 
-Days |  Duration    |           Goals                                           Did i archive?      
- --  | -----------  | ---------------------------------------------------------------------------
-                    |•Figure the best way to present                          
-                    |  your activity logs.                          
+Days |  Duration    |           Goals                                      |     Did i archive? |     
+ --  | -----------  | ---------------------------------------------------- | ------------------ |
+     |              | •Figure the best way to present your activity logs.  |         Yes        |
+     | -----------  | ---------------------------------------------- ----- | ------------------ |                                        
                     |•Researched on how to make a grid                           
                     |  table on github Readme file                          
                     |•Create a react app and basically get                          
