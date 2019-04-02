@@ -11,11 +11,11 @@ A react website that displays data dynamically on a table
 ## Markup design 
 |          Trades            |          Withdraws            |
 |----------------------------|-------------------------------|
-|<img src="./tradeopage.svg">|<img src="./withdrawsPage.svg">|
+|<img src="./tradesPage.svg">|<img src="./withdrawsPage.svg">|
 
 
 ## Back-end Functionallity
-<img src="flow_chart.svg"> 
+<img src="./flow_chart.svg"> 
 
 ### Daily logs / Timestamp
 
