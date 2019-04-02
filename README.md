@@ -9,14 +9,13 @@ A react website that displays data dynamically on a table
 
 
 ## Markup design 
-|               Trades                             |                     Withdraws                    |
-|--------------------------------------------------|--------------------------------------------------|
-![Alt text](./tradeopage.svg?raw=true "Flow chart!") | ![Alt text](./withdrawsPage.svg?raw=true "Flow chart!")|
+|          Trades            |          Withdraws            |
+|----------------------------|-------------------------------|
+|<img src="./tradeopage.svg">|<img src="./withdrawsPage.svg">|
 
 
 ## Back-end Functionallity
-![Alt text](flow_chart.svg?raw=true "Flow chart!")
-
+<img src="flow_chart.svg"> 
 
 ### Daily logs / Timestamp
 
