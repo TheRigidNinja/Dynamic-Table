@@ -11,7 +11,7 @@ A react website that displays data dynamically on a table
 ## Markup design 
 |               Trades                             |                     Withdraws                    |
 |--------------------------------------------------|--------------------------------------------------|
-![Alt text](tradeopage.svg?raw=true "Flow chart!") | ![Alt text](withdrawsPage.svg?raw=true "Flow chart!")|
+![Alt text](./tradeopage.svg?raw=true "Flow chart!") | ![Alt text](./withdrawsPage.svg?raw=true "Flow chart!")|
 
 
 ## Back-end Functionallity
