@@ -80,44 +80,29 @@ table {
 }
 
 .FilterOptions {
-  position: relative;
-  margin: 40px 285px;
+  position: absolute !important;
+  left: 50px !important;
+  margin: 0px !important;
 }
 
 .searchCont {
-  width: 300px;
+  width: 250px;
   position: relative;
-  left: calc(100% / 1.5);
+  left: calc(100% - 300px);
   top: -20px;
-  padding: 5px 10px;
+  padding: 5px 5px;
 }
 
 .searchCont input {
   position: relative;
   min-width: 230px;
   width: 100%;
-  background: rgba(238, 238, 238, 0.3);
-  padding: 10px 5px;
-  top: -3px;
+  background: rgba(238, 238, 238, 0.4);
+  padding: 10px 10px;
 }
 
 .searchCont input:focus {
-  background: rgba(238, 238, 238, 0.5);
-}
-
-.searchCont i {
-  position: relative;
-  top: 3px;
-  left: 5px;
-  padding: 8px 15px;
-  background: rgba(238, 238, 238, 0.9);
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.searchCont i:active {
-  -webkit-transform: scale(0.9, 0.9);
-          transform: scale(0.9, 0.9);
+  background: rgba(238, 238, 238, 0.8);
 }
 
 .paper {
