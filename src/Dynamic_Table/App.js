@@ -7,7 +7,6 @@ import errorPage from "./Pages/404"
 import { BrowserRouter, Route, Switch, Link} from "react-router-dom";
 import { connect } from "react-redux";
 
-
 class App extends Component {
 
   // componentDidMount(){
