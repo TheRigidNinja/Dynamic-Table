@@ -2,26 +2,17 @@ import React from 'react'
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import { connect } from "react-redux";
 
 
-class Trades extends Component {
 
-// function Filter({rowData}) {
-//   console.log(this)
-//   const searchFilter=()=>{
-    
-//     console.log("Yess!")
-//   }
-
-  // Takes searchFilter function globaly
-  // this.props.EventFilters(searchFilter)
-  
+function Filter(rowData) {
+  var filterValue = rowData.filter.table_Data,
+  rowData = rowData.rowData;
 
   if (rowData != undefined){
-    const row = rowData.trades.map(row =>{
-      
-      // console.log(row)
+    console.log(filterValue)
+
+    const row = rowData.trades.filter(filt => filt.key < 5 && (filt["uuid"].toLowerCase().indexOf(filterValue)>=0 || filt["volume"].toLowerCase().indexOf(filterValue)>=0 || filt["price"].toLowerCase().indexOf(filterValue)>=0)).map(row =>{
       return(
         <TableRow key={row.key}>
           <TableCell align="left">{row.uuid}</TableCell>
@@ -34,15 +25,9 @@ class Trades extends Component {
       )
     })
     return row
-  }else{
-    return <TableBody>Loading...</TableBody>
   }
+  return <TableBody>Loading...</TableBody>
+  
 }
 
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    EventFilters: (filt) => {dispatch({type:'PASSFUN',filt:filt})}
-  }
-}
-export default connect(null, mapDispatchToProps)(Filter)
+export default Filter

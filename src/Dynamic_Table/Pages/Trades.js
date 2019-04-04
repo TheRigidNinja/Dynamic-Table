@@ -27,12 +27,16 @@ import Filter from './Filter';
 
 class Trades extends Component {
   state = {
-    table_Data: []
+    table_Data: ""
   }
 
+  // Sets filter value
   handleChange=()=>{
-    console.log(this.props)
-    // this.props
+    this.setState({
+      table_Data: document.querySelector(".searchBar").querySelector("input").value.replace(/\s/g, '')
+    })
+
+    console.log(this.state.table_Data)
   }
 
   render() {
@@ -67,7 +71,7 @@ class Trades extends Component {
             </TableHead>
 
             <TableBody>
-              <Filter rowData={this.props.table_Data} />
+              <Filter rowData={this.props.table_Data} filter={this.state}/>
             </TableBody>
 
             <TableFooter>
@@ -90,15 +94,12 @@ class Trades extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // Trades_Data: (data) => {dispatch({type:'UPDATE_TRADE',data:data})},
-    // Withdraws_Data: (data) => { dispatch({ type: 'UPDATE_WITHDRAWS', data: data }) }
   }
 }
 
 const mapStateToProps = (state) => {
   return { 
     table_Data: state.Trades_Data.data,
-    Filter: (filt) => { Filter(filt) },
   };
 }
 
