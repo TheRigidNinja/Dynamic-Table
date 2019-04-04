@@ -6,9 +6,8 @@ function Withdraws() {
 
   return (
     <div>
-        <NavLink to="/trades"><Button variant="contained" size="large" color="primary" className="navBTN_prov"><i class="material-icons">navigate_before</i>Trades</Button>
-        </NavLink>
-        
+        <h1>404 The Page cannot be found </h1>
+        <NavLink to="/trades"><Button>Go to trades --></Button></NavLink>
     </div>
   )
 }
