@@ -1,18 +1,11 @@
 import React from 'react'
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-
-
-function Filter(rowData) {
-  var filterValue = rowData.filter.table_Data,
-  rowData = rowData.rowData;
-
-  if (rowData != undefined){
-    console.log(filterValue)
-
-    const row = rowData.trades.filter(filt => filt.key < 5 && (filt["uuid"].toLowerCase().indexOf(filterValue)>=0 || filt["volume"].toLowerCase().indexOf(filterValue)>=0 || filt["price"].toLowerCase().indexOf(filterValue)>=0)).map(row =>{
+function Filter({rowData}) {
+  // console.log(rowData)
+  if (rowData != undefined && rowData.length > 0){    
+    const row = rowData.map(row =>{
       return(
         <TableRow key={row.key}>
           <TableCell align="left">{row.uuid}</TableCell>
@@ -26,7 +19,8 @@ function Filter(rowData) {
     })
     return row
   }
-  return <TableBody>Loading...</TableBody>
+  return(<TableRow><TableCell><br/>Loading ...</TableCell>
+  </TableRow>)
   
 }
 

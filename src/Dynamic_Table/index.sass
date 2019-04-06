@@ -55,7 +55,7 @@ $Hleft: 12px
         margin: $left+px $top+px
 
 table
-    +reposition(50,0,"--")
+    +reposition(30,0,"--")
 
   
 .TableContainer
@@ -73,7 +73,7 @@ table
     width: 100px
     +reposition(110,-45,"Pos")
 
-    .btn
+    button
         position: absolute
         box-shadow: none !important
 
@@ -106,5 +106,33 @@ table
     position: relative
     +reposition(-100,10,"Pos")
 
-// table
-//     +reposition(-100,10,"POS")
+
+// ------------------------- // Footer content // ------------------------- //
+=pageElement($left,$top)
+    position: relative
+    margin: -$top 0px -$left 0px
+
+.Pagination
+    font-size: 12px
+    position: relative
+    left: calc(100% - 380px)
+    *span
+        margin-left: 20px
+
+    button
+        outline: none
+        border: none
+        box-shadow: none
+        width: 40px !important
+        height: 40px !important
+        background: none
+        opacity: .7
+
+        &:active
+            box-shadow: none
+
+.dropdown
+    display: inline
+
+.pageSize
+    margin: 0px 30px
