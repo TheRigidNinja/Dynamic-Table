@@ -1,21 +1,22 @@
 
-## Dynamic Table
+# Dynamic Table
 A react web app that displays data from API dynamically on a table
 
 
-## Instructions
-<li> Click<a href="##">here</a> to see the live website</li><br>
-<h2>Alternatively follow instructions to run locally</h2>
+### Instructions
+<li> Click<a href="##">here</a> to see the live website</li><br/>
+
+### Alternatively follow instructions to run locally Instructions
 <code>Npm run</code>
 
 
-## Markup design 
+### Markup design 
 |          Trades            |          Withdraws            |
 |----------------------------|-------------------------------|
 |<img src="./tradesPage.svg">|<img src="./withdrawsPage.svg">|
 
 
-## Back-end Functionality
+### Back-end Functionality
 <img src="./flow_chart.svg"> 
 
 ### Daily logs / Timestamp
