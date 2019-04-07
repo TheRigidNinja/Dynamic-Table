@@ -12,7 +12,7 @@ A react web app that displays data from API dynamically on a table
 <li>Type <code>serve -s build</code> This should start running the app locally on <code>http://localhost:5000</code> </li>
 
 
-# Total time spent was: 23:40h
+# Total time spent was: 24:40h
 
 
 ### Markup design 
@@ -34,6 +34,6 @@ A react web app that displays data from API dynamically on a table
 | 4| 6:00pm - 9:20pm|✔Figure a way you could spawn the drop-down list options for filter<br>✔Implement search bar and make it search for items<br>✘ Do a little more research on material UI, you need to better understand how to implement pagination <br>| |
 | 5| 8pm - 11pm |✔Finish the rest of flowchart for back-end structure<br>✔ Finish implementing the back-end of the app according to the flowchart<br>✔Make your own pagination and implement app everything according to markup<br>| |
 | 6 |6pm - 9pm |✔Update Readme file<br>✔Add all the front-end visuals and make sure they're working i.e: <li>More styling on the search bar</li><li>pop-up menu option on filters</li><li>More styling on pagination</li>||
-| 7| 11:00am - 2:00pm -->  4:30pm - 9pm|✔Get pagination "next" and "prov" button working<br>✔Make the Reset button to work<br>✔Make it possible so you can search range  between<br>✔Finish and refine you documentation <br>✔Write instruction on how you can run the application<br>✔Build / Deploy the application on firebase!<br>
+| 7| 11:00am - 2:00pm -->  4:30pm - 9pm|✔Get pagination "next" and "prov" button working<br>✔Make the Reset button to work<br>✔Make it possible so you can search range  between<br>✔Finish and refine you documentation <br>✔Write instruction on how you can run the application<br>✘Build / Deploy the application on firebase!<br>
 | |
-| Due| --------- | --------- |  |
+| Due| 4am - 5am |✔Deploy the application on firebase<br>✔Go over everything and make-sure the application is working as planned<br>|  |
