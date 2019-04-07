@@ -1,8 +1,6 @@
 const initState = {
     Trades_Data:{},
-    Withdraws_Data:{},
-    Filter: null,
-    GlobalFuntion:Object
+    Withdraws_Data:{}
 }
 
 const rootReducer = (state = initState, action) =>{
@@ -13,10 +11,6 @@ const rootReducer = (state = initState, action) =>{
             return {...state, Trades_Data: action.data}
         case "UPDATE_WITHDRAWS":
             return {...state, Withdraws_Data: action.data}
-        case "PASSFUN":
-            return {...state, Filter: action.filt}
-        case "FUNC":
-            return {...state, GlobalFuntion: action.data}
         default:
             return state
     }
