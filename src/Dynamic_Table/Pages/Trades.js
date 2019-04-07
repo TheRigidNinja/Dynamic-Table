@@ -108,7 +108,6 @@ class Trades extends Component {
             {/* // ------ // Menu Filter Pop-up*/}
             <Menu id="simple-menus" anchorEl={anchorFilt} open={Boolean(anchorFilt)} onClose={(event)=>this.DataCollector([event,"HandleClose"])}>
               <MenuItem onClick={()=>this.DataCollector(["HandleClose","ASK"])}>ASK</MenuItem>
-              <MenuItem onClick={()=>this.DataCollector(["HandleClose","BTC/AUD & ETH/AUD"])}>{"BTC/AUD & ETH/AUD"}</MenuItem>
               <MenuItem onClick={()=>this.DataCollector(["HandleClose","ETH/AUD"])}>ETH/AUD</MenuItem>
               <MenuItem onClick={()=>this.DataCollector(["HandleClose","ETH/BTC"])}>ETH/BTC</MenuItem>
             </Menu>

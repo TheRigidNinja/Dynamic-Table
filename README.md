@@ -7,9 +7,9 @@ A react web app that displays data from API dynamically on a table
 <li> Click <a href="https://dynamictable-44ad8.firebaseapp.com/trades">[ here ]</a> to see the live website</li><br/>
 
 ### Alternatively follow instructions to run locally
-<li>Navigate to <a href="https://github.com/TheRigidNinja/Dynamic-Table">[ here ]</a>then download Repo / unzip if need be.</li>
-<li><code>cd code-test/build</code> into the build directory</li>
-<li>Type <code>serve -s build</code> This should start running the app locally</li>
+<li>Navigate to <a href="https://github.com/TheRigidNinja/Dynamic-Table">[ here ] </a>then download Repo / unzip if need be.</li>
+<li><code>cd</code> into the build directory</li>
+<li>Type <code>serve -s build</code> This should start running the app locally on <code>http://localhost:5000</code> </li>
 
 ### Markup design 
 |          Trades            |          Withdraws            |

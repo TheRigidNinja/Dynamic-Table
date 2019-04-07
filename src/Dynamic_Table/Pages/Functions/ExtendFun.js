@@ -17,8 +17,7 @@ class ExtendFun extends Component{
  // ------ // Pops up filter options when clicked
     handleClick = (event) => {
         if(event.currentTarget.parentElement.className === "filter"){
-            this.state.anchorFilt = event.currentTarget;
-            // this.state.anchorFilt = event.currentTarget;
+            this.state = {...this.state,anchorFilt:event.currentTarget,pageNumber:1};
         }else{
             this.state.anchorDrop = event.currentTarget;
         }
@@ -78,7 +77,7 @@ class ExtendFun extends Component{
 
             // ------// Types of actions to take for different Filters
             switch(true){
-                case ["ASK","BTC/AUD & ETH/AUD","ETH/AUD","ETH/BTC","PROCESSED","REJECTED","REFUNDED"].includes(info):
+                case ["ASK","ETH/AUD","ETH/BTC","PROCESSED","REJECTED","REFUNDED"].includes(info):
                 filterElement = info;
                 this.state.filterElement = info;
                 break;
@@ -131,12 +130,14 @@ class ExtendFun extends Component{
 
                 // ------// Side , Status & TradingPair  - Filter
                 if(this.state.pageType == "Trades"){ // Only works when on trades to prevent error
-                    if(filt["side"] === filterElement || filt["tradingPair"]["symbol"] === filterElement){
+                    if(filt["tradingPair"]["symbol"] == filterElement){
                         filterpage = true;
+                    }else{
+                        filterpage = false;
                     }
                 }
 
-                if(filterpage || filterElement === null || filt["status"] === filterElement){
+                if(filt["side"] == filterElement|| filterpage || filterElement === null || filt["status"] === filterElement){
                     filter = true;
                 }else{
                     filter = false;
@@ -147,7 +148,7 @@ class ExtendFun extends Component{
                     uuid = filt["uuid"].toLowerCase().indexOf(searchValue)>=0;
 
                     // ------// Check if its Trades or Withdraw page
-                    if(this.state.pageType == "Withdraw"){ 
+                    if(this.state.pageType == "Withdraws"){ 
                         amount = filt["amount"].indexOf(searchValue)>=0;
                         refNumber = filt["bankReferenceNumber"].toLowerCase().indexOf(searchValue)>=0;
                     }else{ 
