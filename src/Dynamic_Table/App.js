@@ -16,6 +16,7 @@ class App extends Component {
       axios.get(apiLinks[link])
       .then(res =>{
 
+        // ------ // Applying key to the data
         for (let key = 0; key < res.data.trades.length; key++) {
           res.data.trades[key] = {...res.data.trades[key],key:key}
         }

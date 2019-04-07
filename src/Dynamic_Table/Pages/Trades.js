@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink} from "react-router-dom";
 import { connect } from "react-redux";
-import Filter from './Filter';
+import Filter from './Functions/Filter';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Table from '@material-ui/core/Table';
@@ -18,229 +18,105 @@ import IconNext from '@material-ui/icons/ChevronRight';
 import IconProv from '@material-ui/icons/ChevronLeft';
 import IconDropdown from '@material-ui/icons/ArrowDropDown';
 import Button from '@material-ui/core/Button'
+import ExtendFun from './Functions/ExtendFun';
+
 
 class Trades extends Component {
   state = {
-    anchorFilt: null,
-    anchorDrop: null,
-    pageNumber: 1,
-    setStateProps: false,
-    filterElement: null,
-    rowNumber: 5,
-    filteredTableData: [],
-    tableSemiFilteredData:[],
+    newState:{
+      anchorFilt: null,
+      anchorDrop: null,
+      pageNumber: 1,
+      setStateProps: false,
+      filterElement: null,
+      rowNumber: 5,
+      filteredTableData: [],
+      tableSemiFilteredData:[],
+      tableData: []
+    },
     didReceiveProps:false
   }
 
+
   componentDidMount(){
-    this.windowLoad();
+    this.pageLoad();
+  }
+
+  getSnapshotBeforeUpdate() {
+    return null
   }
 
   componentDidUpdate(){
-    document.addEventListener("load",this.windowLoad());
+    this.pageLoad();
   }
 
-  windowLoad =()=>{
+  pageLoad = () =>{
     // console.log(this.props.tableData)
-    if(this.state.didReceiveProps == false && this.props.tableData != undefined){
-      this.setState({
-        didReceiveProps: true,
-      },()=>{this.handleFiltersEvents();})
+    if(this.state.didReceiveProps === false && this.props.tableData !== undefined){
+      ExtendFun.state.tableData = this.props.tableData;
+      ExtendFun.state.pageType = "Trades";
+      this.setState({didReceiveProps: true},()=>{this.DataCollector("Load")})
     }
   }
 
-  // ------ // Pops up filter options when clicked
-  handleClick = (event) => {
-    if(event.currentTarget.parentElement.className === "filter"){
-      this.setState({anchorFilt:event.currentTarget });
-    }else{
-      this.setState({ anchorDrop: event.currentTarget});
+  DataCollector=(data)=>{ 
+    // ------ // Handles click events
+    if(typeof(data) === "object" && data[1] === "HandleClick"){
+      ExtendFun.handleClick(data[0]);
     }
-  };
-  
-  handleClose = (info) => {
-    // ------ // Removes pop-up filter options
-    this.setState({anchorFilt:null, anchorDrop: null});
-    // ------ // Passes data to function
-    this.handleFiltersEvents(info);    
-  };
 
-  handleReset = () =>{
-    this.setState({rowNumber:5,filterElement: null,pageNumber:1});
-    document.querySelector(".searchBar").querySelector("input").value="";
-    this.handleFiltersEvents("Reset");
-  }
-
-  // ------ //
-  handlePagination = (type) =>{
-
-    // console.log(this.state.rowNumber,this.state.tableSemiFilteredData.length)
-    let semiData = this.state.tableSemiFilteredData;
-    // && this.state.pageNumber < Math.ceil(semiData.length/rowNumber)
-    
-    if(type == "Next" && semiData.length > this.state.rowNumber && this.state.pageNumber < Math.ceil(semiData.length/this.state.rowNumber)){
-      let filteredLength = this.state.filteredTableData.length*this.state.pageNumber;
-      console.log(filteredLength,filteredLength+this.state.rowNumber)
-
-      this.setState({
-        filteredTableData: semiData.slice(filteredLength,filteredLength+this.state.rowNumber),
-        pageNumber: this.state.pageNumber+=1
-      },()=>{this.handleFiltersEvents("AlreadyFiltered")});
-
-    }else if(type == "Prov" && this.state.pageNumber >= 2){//
-      let filteredLength = this.state.filteredTableData.length*this.state.pageNumber-this.state.rowNumber 
-
-
-      console.log(filteredLength,filteredLength-this.state.rowNumber)
-
-      // console.log(filteredLength)
-      this.setState({
-        filteredTableData: semiData.slice(filteredLength-this.state.rowNumber,filteredLength),
-        pageNumber: this.state.pageNumber-=1
-      },()=>{this.handleFiltersEvents("AlreadyFiltered")})
+    // ------ // Handles close events
+    if(typeof(data) === "object" && data[0] === "HandleClose"){
+      ExtendFun.handleClose(data[1])
     }
-  }
 
-  handleFiltersEvents=(info)=>{
-    if(info != "AlreadyFiltered"){
-      let rageUpdatedAt = false,
-      rangeKey = null,
-      searchValue = null,
-      uuid = false,
-      volume = false,
-      price = false,
-      filter = false,
-      filterElement = info=="Reset"?null:this.state.filterElement,
-      filterRows = info=="Reset"?5:this.state.rowNumber;
-
-      // ------// Types of actions to take for different Filters
-      switch(true){
-        case ["ASK","BTC/AUD & ETH/AUD","ETH/AUD","ETH/BTC"].includes(info):
-          filterElement = info;
-          this.setState({filterElement: info});
-        break;
-
-        case /[0-9]/.test(Number(info)):
-          filterRows = info;
-          console.log("----",info)
-          this.setState({rowNumber: info});
-        break;
-
-        case info === "Search":
-          // ------// Whenever a user starts searching the below executes
-          searchValue = document.querySelector(".searchBar")
-          .querySelector("input").value.replace(/\s/g, '').toLowerCase();
-          // ------// Makes sure you have a range between something
-          switch(true){
-            case searchValue.indexOf("-")>=0 && /[a-zA-Z]/.test(searchValue) !=true:
-              rangeKey="-"
-            break;
-            case searchValue.indexOf("to")>=0:
-              rangeKey="to"
-            break;
-            case searchValue.indexOf("&")>=0:
-              rangeKey="&"
-            break;
-            case searchValue.indexOf("and")>=0:
-              rangeKey="and"
-            break;
-          }
-          // ------// Sets the value of range in array
-          if(rangeKey !== null){
-            rangeKey = searchValue.split(rangeKey);
-
-            // let rangeNum1 = Number(String(rangeKey[0]).replace(/\//g,"")),
-            // rangeNum2 = Number(String(rangeKey[1]).replace(/\//g,""))
-
-            let holdValue = Math.max(rangeKey[0],rangeKey[1])
-            rangeKey[0] = Math.min(rangeKey[0],rangeKey[1])
-            rangeKey[1] = holdValue;
-          }
-        break;
-        default:
-          console.log("FAILED")
-      }
-
-      // ------// Rules for filters
-      let rowCount = 0,
-      rowOverFlow = 0,
-      overFlowData = [],
-      tableData = this.props.tableData;
-      
-      if(tableData !== undefined){
-        const filteredArray = tableData.trades.filter(filt => {
-          // ------// Side & TradingPair  - Filter
-          if(filt["side"] == filterElement){
-            filter = true;
-          }else if(filt["tradingPair"]["symbol"] == filterElement){
-            filter = true;
-          }else if(filterElement == null){
-            filter = true;
-          }else{
-            filter = false;
-          }
-          // ------// rangeKey = null which means a users was never typing it; then do below
-          if(rangeKey == null){
-            uuid = filt["uuid"].toLowerCase().indexOf(searchValue)>=0;
-            volume = filt["volume"].indexOf(searchValue)>=0;
-            price = filt["price"].indexOf(searchValue)>=0;
-          // ------// Calculating range
-          }else if(filt["updatedAt"] >= rangeKey[0] && filt["updatedAt"] <= rangeKey[1] || filt["createdAt"] >= rangeKey[0] && filt["createdAt"] <= rangeKey[1]){
-            rageUpdatedAt = true;
-          }else{ rageUpdatedAt = false; }
-
-          // ------// restricts how many rows can be shown
-          let perimeterCheck = false;
-          if(rowCount < filterRows && filter){
-            perimeterCheck = true;rowCount++;
-          }
-
-          // Get table data that doesn't have restrictive row count for pagnation
-          if(filter && (info!="Search" || rageUpdatedAt || uuid || volume || price)){
-            overFlowData[rowOverFlow] = tableData.trades[rowOverFlow];
-            rowOverFlow++;
-          }
-
-          return(perimeterCheck && (info!="Search" || rageUpdatedAt || uuid || volume || price))
-        })
-
-        this.setState({
-          filteredTableData:filteredArray,
-          tableSemiFilteredData:overFlowData
-        })
-      }
+    // ------ // Handles Reset
+    if(data === "Reset"){
+      ExtendFun.handleReset();
     }
+
+    // ------ // Handle Pagination
+    if(data === "Prov" || data === "Next"){
+      ExtendFun.handlePagination(data);
+    }
+
+    if(data === "Search" || data === "Load"){
+      ExtendFun.handleFiltersEvents(data);
+    }
+
+    // ------ // Reasign state with new data from another state of ExtendFun
+    this.setState({newState:ExtendFun.state});
   }
 
 
   render() {
-    const {pageNumber,filterElement,anchorFilt,anchorDrop,rowNumber,filteredTableData,tableSemiFilteredData} = this.state;
+    const {pageNumber,filterElement,anchorFilt,anchorDrop,rowNumber,filteredTableData,tableSemiFilteredData} = this.state.newState;
 
     return(
       <div className="TableContainer">
-        <NavLink to="/withdraws"><Button variant="contained" size="large" color="primary" className="navBTN_next">Withdraws<i className="material-icons">navigate_next</i></Button></NavLink>  
+        <NavLink to="/withdraws"><Button variant="contained" size="large" color="primary" className="navBTN_next" onClick={()=>this.DataCollector("Reset")}>Withdraws<i className="material-icons">navigate_next</i></Button></NavLink>  
 
         <Paper className="paper">
-          <Button variant="outlined" size="large" color="primary" className="clear" onClick={this.handleReset}>Reset</Button>     
+          <Button variant="outlined" size="large" color="primary" className="clear" onClick={()=>this.DataCollector("Reset")}>Reset</Button>     
 
           {/* // ------ // Filter icon*/}
           <section className="filter" >
-            <Fab variant="extended" aria-owns={anchorFilt ? 'filter' : undefined} aria-haspopup="true" onClick={this.handleClick}>
+            <Fab variant="extended" aria-owns={anchorFilt ? 'filter' : undefined} aria-haspopup="true" onClick={(event)=>this.DataCollector([event,"HandleClick"])}>
               {filterElement}<FilterIcon/>
             </Fab>
 
             {/* // ------ // Menu Filter Pop-up*/}
-            <Menu id="simple-menus" anchorEl={anchorFilt} open={Boolean(anchorFilt)} onClose={this.handleClose}>
-              <MenuItem onClick={()=>this.handleClose("ASK")}>ASK</MenuItem>
-              <MenuItem onClick={()=>this.handleClose("BTC/AUD & ETH/AUD")}>{"BTC/AUD & ETH/AUD"}</MenuItem>
-              <MenuItem onClick={()=>this.handleClose("ETH/AUD")}>ETH/AUD</MenuItem>
-              <MenuItem onClick={()=>this.handleClose("ETH/BTC")}>ETH/BTC</MenuItem>
+            <Menu id="simple-menus" anchorEl={anchorFilt} open={Boolean(anchorFilt)} onClose={(event)=>this.DataCollector([event,"HandleClose"])}>
+              <MenuItem onClick={()=>this.DataCollector(["HandleClose","ASK"])}>ASK</MenuItem>
+              <MenuItem onClick={()=>this.DataCollector(["HandleClose","BTC/AUD & ETH/AUD"])}>{"BTC/AUD & ETH/AUD"}</MenuItem>
+              <MenuItem onClick={()=>this.DataCollector(["HandleClose","ETH/AUD"])}>ETH/AUD</MenuItem>
+              <MenuItem onClick={()=>this.DataCollector(["HandleClose","ETH/BTC"])}>ETH/BTC</MenuItem>
             </Menu>
           </section>  
 
           {/* // ------// Search bar */}
           <Paper className="searchCont">
-            <InputBase placeholder="Search here…" className="searchBar" onChange={()=>this.handleFiltersEvents("Search")}/>
+            <InputBase placeholder="Search here…" className="searchBar" onChange={()=>this.DataCollector("Search")}/>
           </Paper>
 
           <Table>
@@ -257,7 +133,7 @@ class Trades extends Component {
 
             <TableBody>
               {/* // ------ // Table data gets loaded here */}
-              <Filter rowData={filteredTableData}/>
+              <Filter rowData={filteredTableData} pageType="Trades"/>
             </TableBody>  
 
             <TableFooter>
@@ -266,20 +142,20 @@ class Trades extends Component {
                     <span>Rows per page:</span>
 
                     <div className="dropdown">
-                      <Button size="small" aria-owns={anchorDrop ? '' : undefined}  aria-haspopup="true" onClick={this.handleClick}>
+                      <Button size="small" aria-owns={anchorDrop ? '' : undefined}  aria-haspopup="true" onClick={(event)=>this.DataCollector([event,"HandleClick"])}>
                         <span>{rowNumber}</span><IconDropdown/>
                       </Button>  
-                      <Menu anchorEl={anchorDrop} open={Boolean(anchorDrop)} onClose={this.handleClose} >
-                        <MenuItem onClick={()=>this.handleClose(5)}>5</MenuItem>
-                        <MenuItem onClick={()=>this.handleClose(10)}>10</MenuItem>
-                        <MenuItem onClick={()=>this.handleClose(20)}>20</MenuItem>
-                        <MenuItem onClick={()=>this.handleClose(40)}>40</MenuItem>
+                      <Menu anchorEl={anchorDrop} open={Boolean(anchorDrop)} onClose={(event)=>this.DataCollector("HandleClose")}>
+                        <MenuItem onClick={()=>this.DataCollector(["HandleClose",5])}>5</MenuItem>
+                        <MenuItem onClick={()=>this.DataCollector(["HandleClose",10])}>10</MenuItem>
+                        <MenuItem onClick={()=>this.DataCollector(["HandleClose",20])}>20</MenuItem>
+                        <MenuItem onClick={()=>this.DataCollector(["HandleClose",40])}>40</MenuItem>
                       </Menu>
                     </div>  
 
                     <span className="pageSize">{pageNumber+" - "+rowNumber} of {Math.ceil(tableSemiFilteredData.length/rowNumber)}</span>
-                    <Fab className="Prov" onClick={()=>this.handlePagination("Prov")}><IconProv/></Fab>
-                    <Fab className="Next" onClick={()=>this.handlePagination("Next")}><IconNext/></Fab>
+                    <Fab className="Prov" onClick={()=>this.DataCollector("Prov")}><IconProv/></Fab>
+                    <Fab className="Next" onClick={()=>this.DataCollector("Next")}><IconNext/></Fab>
 
                   </TableCell>
               </TableRow>

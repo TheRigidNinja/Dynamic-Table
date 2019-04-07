@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button';
 import { NavLink} from "react-router-dom";
 
-function Withdraws() {
+function E404() {
 
   return (
     <div className="errorPage">
@@ -13,4 +13,4 @@ function Withdraws() {
   )
 }
 
-export default Withdraws
+export default E404
