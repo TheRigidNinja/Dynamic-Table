@@ -4,6 +4,12 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 a {
@@ -52,10 +58,11 @@ table {
 }
 
 .TableContainer {
+  overflow: hidden;
   position: relative;
   width: 1100px !important;
-  left: calc(50% - 550px);
-  top: 50px;
+  padding: 25px 10px;
+  top: 40px;
 }
 
 .clear {
@@ -67,7 +74,6 @@ table {
 }
 
 .filter {
-  width: 100px;
   position: relative;
   left: 210px;
   top: -10px;
@@ -144,5 +150,14 @@ table {
 
 .pageSize {
   margin: 0px 30px;
+}
+
+.errorPage {
+  text-align: center;
+  font-size: 2pc;
+}
+
+.errorPage h1 {
+  font-size: 5pc;
 }
 /*# sourceMappingURL=index.css.map */

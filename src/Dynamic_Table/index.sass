@@ -4,6 +4,8 @@ body
     margin: 0
     padding: 0
     width: 100%
+    display: flex
+    justify-content: center
 
 a 
     text-decoration: none
@@ -59,10 +61,11 @@ table
 
   
 .TableContainer
+    overflow: hidden
     position: relative
     width: 1100px !important
-    left: calc(50% - 550px)
-    top: 50px
+    padding: 25px 10px
+    top: 40px
 
 .clear
     color: #6100ED !important
@@ -70,7 +73,7 @@ table
     +reposition(-50,0,"Pos")
 
 .filter
-    width: 100px
+    // width: 100px
     +reposition(110,-45,"Pos")
 
     button
@@ -136,3 +139,10 @@ table
 
 .pageSize
     margin: 0px 30px
+
+
+.errorPage
+    text-align: center
+    font-size: 2pc
+    h1
+        font-size: 5pc

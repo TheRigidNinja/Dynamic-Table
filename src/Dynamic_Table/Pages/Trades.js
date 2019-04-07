@@ -23,12 +23,12 @@ class Trades extends Component {
   state = {
     anchorFilt: null,
     anchorDrop: null,
-    pageMenu: false,
+    pageNumber: 1,
     setStateProps: false,
     filterElement: null,
     rowNumber: 5,
     filteredTableData: [],
-    tableData:[],
+    tableSemiFilteredData:[],
     didReceiveProps:false
   }
 
@@ -45,7 +45,6 @@ class Trades extends Component {
     if(this.state.didReceiveProps == false && this.props.tableData != undefined){
       this.setState({
         didReceiveProps: true,
-        tableData: this.props.tableData.trades
       },()=>{this.handleFiltersEvents();})
     }
   }
@@ -67,110 +66,156 @@ class Trades extends Component {
   };
 
   handleReset = () =>{
-    this.setState({rowNumber:5,filterElement: null});
+    this.setState({rowNumber:5,filterElement: null,pageNumber:1});
     document.querySelector(".searchBar").querySelector("input").value="";
     this.handleFiltersEvents("Reset");
   }
 
   // ------ //
   handlePagination = (type) =>{
+
+    // console.log(this.state.rowNumber,this.state.tableSemiFilteredData.length)
+    let semiData = this.state.tableSemiFilteredData;
+    // && this.state.pageNumber < Math.ceil(semiData.length/rowNumber)
     
-    console.log(this.state.tableData)
+    if(type == "Next" && semiData.length > this.state.rowNumber && this.state.pageNumber < Math.ceil(semiData.length/this.state.rowNumber)){
+      let filteredLength = this.state.filteredTableData.length*this.state.pageNumber;
+      console.log(filteredLength,filteredLength+this.state.rowNumber)
+
+      this.setState({
+        filteredTableData: semiData.slice(filteredLength,filteredLength+this.state.rowNumber),
+        pageNumber: this.state.pageNumber+=1
+      },()=>{this.handleFiltersEvents("AlreadyFiltered")});
+
+    }else if(type == "Prov" && this.state.pageNumber >= 2){//
+      let filteredLength = this.state.filteredTableData.length*this.state.pageNumber-this.state.rowNumber 
+
+
+      console.log(filteredLength,filteredLength-this.state.rowNumber)
+
+      // console.log(filteredLength)
+      this.setState({
+        filteredTableData: semiData.slice(filteredLength-this.state.rowNumber,filteredLength),
+        pageNumber: this.state.pageNumber-=1
+      },()=>{this.handleFiltersEvents("AlreadyFiltered")})
+    }
   }
 
   handleFiltersEvents=(info)=>{
-    let rageUpdatedAt = false,
-    rangeKey = null,
-    searchValue = null,
-    uuid = false,
-    volume = false,
-    price = false,
-    filter = false,
-    filterElement = info=="Reset"?null:this.state.filterElement,
-    filterRows = info=="Reset"?5:this.state.rowNumber;
+    if(info != "AlreadyFiltered"){
+      let rageUpdatedAt = false,
+      rangeKey = null,
+      searchValue = null,
+      uuid = false,
+      volume = false,
+      price = false,
+      filter = false,
+      filterElement = info=="Reset"?null:this.state.filterElement,
+      filterRows = info=="Reset"?5:this.state.rowNumber;
 
-    // ------// Types of actions to take for different Filters
-    switch(true){
-      case ["ASK","BID","BTC/AUD","ETH/AUD","ETH/BTC"].includes(info):
-        filterElement = info;
-        this.setState({filterElement: info});
-      break;
+      // ------// Types of actions to take for different Filters
+      switch(true){
+        case ["ASK","BTC/AUD & ETH/AUD","ETH/AUD","ETH/BTC"].includes(info):
+          filterElement = info;
+          this.setState({filterElement: info});
+        break;
 
-      case /[0-9]/.test(Number(info)):
-        filterRows = info;
-        console.log("----",info)
-        this.setState({rowNumber: info});
-      break;
+        case /[0-9]/.test(Number(info)):
+          filterRows = info;
+          console.log("----",info)
+          this.setState({rowNumber: info});
+        break;
 
-      case info === "Search":
-        // ------// Whenever a user starts searching the below executes
-        searchValue = document.querySelector(".searchBar")
-        .querySelector("input").value.replace(/\s/g, '').toLowerCase();
-        // ------// Makes sure you have a range between something
-        switch(true){
-          case searchValue.indexOf("-")>=0 && /[a-zA-Z]/.test(searchValue) !=true:
-            rangeKey="-"
-          break;
-          case searchValue.indexOf("to")>=0:
-            rangeKey="to"
-          break;
-          case searchValue.indexOf("&")>=0:
-            rangeKey="&"
-          break;
-          case searchValue.indexOf("and")>=0:
-            rangeKey="and"
-          break;
-        }
-        // ------// Sets the value of range in array
-        if(rangeKey !== null){
-          rangeKey = searchValue.split(rangeKey);
-          let holdValue = Math.max(Number(rangeKey[0]),Number(rangeKey[1]))
-          rangeKey[0] = Math.min(Number(rangeKey[0]),Number(rangeKey[1]))
-          rangeKey[1] = holdValue;
-        }
-      break;
-      default:
-        console.log("FAILED")
-    }
+        case info === "Search":
+          // ------// Whenever a user starts searching the below executes
+          searchValue = document.querySelector(".searchBar")
+          .querySelector("input").value.replace(/\s/g, '').toLowerCase();
+          // ------// Makes sure you have a range between something
+          switch(true){
+            case searchValue.indexOf("-")>=0 && /[a-zA-Z]/.test(searchValue) !=true:
+              rangeKey="-"
+            break;
+            case searchValue.indexOf("to")>=0:
+              rangeKey="to"
+            break;
+            case searchValue.indexOf("&")>=0:
+              rangeKey="&"
+            break;
+            case searchValue.indexOf("and")>=0:
+              rangeKey="and"
+            break;
+          }
+          // ------// Sets the value of range in array
+          if(rangeKey !== null){
+            rangeKey = searchValue.split(rangeKey);
 
-    // ------// Rules for filters
-    let rowCount = 0;
-    if(this.state.tableData !== undefined){
-      const filteredArray = this.state.tableData.filter(filt => {
-        // ------// Side & TradingPair  - Filter
-        if(filt["side"] == filterElement){
-          filter = true;
-        }else if(filt["tradingPair"]["symbol"] == filterElement){
-          filter = true;
-        }else if(filterElement == null){
-          filter = true;
-        }else{
-          filter = false;
-        }
-        // ------// rangeKey = null which means a users was never typing it; then do below
-        if(rangeKey == null){
-          uuid = filt["uuid"].toLowerCase().indexOf(searchValue)>=0;
-          volume = filt["volume"].indexOf(searchValue)>=0;
-          price = filt["price"].indexOf(searchValue)>=0;
-        // ------// Calculating range
-        }else if(filt["updatedAt"] >= rangeKey[0] && filt["updatedAt"] <= rangeKey[1]){
-          rageUpdatedAt = true;
-        }else{ rageUpdatedAt = false; }
+            // let rangeNum1 = Number(String(rangeKey[0]).replace(/\//g,"")),
+            // rangeNum2 = Number(String(rangeKey[1]).replace(/\//g,""))
 
-        // ------// restricts how many rows can be shown
-        let perimeterCheck = false;
-        if(rowCount < filterRows && filter){perimeterCheck = true;rowCount++;}
+            let holdValue = Math.max(rangeKey[0],rangeKey[1])
+            rangeKey[0] = Math.min(rangeKey[0],rangeKey[1])
+            rangeKey[1] = holdValue;
+          }
+        break;
+        default:
+          console.log("FAILED")
+      }
 
-        return(perimeterCheck && (info!="Search" || rageUpdatedAt || uuid || volume || price))
-      })
+      // ------// Rules for filters
+      let rowCount = 0,
+      rowOverFlow = 0,
+      overFlowData = [],
+      tableData = this.props.tableData;
+      
+      if(tableData !== undefined){
+        const filteredArray = tableData.trades.filter(filt => {
+          // ------// Side & TradingPair  - Filter
+          if(filt["side"] == filterElement){
+            filter = true;
+          }else if(filt["tradingPair"]["symbol"] == filterElement){
+            filter = true;
+          }else if(filterElement == null){
+            filter = true;
+          }else{
+            filter = false;
+          }
+          // ------// rangeKey = null which means a users was never typing it; then do below
+          if(rangeKey == null){
+            uuid = filt["uuid"].toLowerCase().indexOf(searchValue)>=0;
+            volume = filt["volume"].indexOf(searchValue)>=0;
+            price = filt["price"].indexOf(searchValue)>=0;
+          // ------// Calculating range
+          }else if(filt["updatedAt"] >= rangeKey[0] && filt["updatedAt"] <= rangeKey[1] || filt["createdAt"] >= rangeKey[0] && filt["createdAt"] <= rangeKey[1]){
+            rageUpdatedAt = true;
+          }else{ rageUpdatedAt = false; }
 
-      this.setState({filteredTableData:filteredArray})
+          // ------// restricts how many rows can be shown
+          let perimeterCheck = false;
+          if(rowCount < filterRows && filter){
+            perimeterCheck = true;rowCount++;
+          }
+
+          // Get table data that doesn't have restrictive row count for pagnation
+          if(filter && (info!="Search" || rageUpdatedAt || uuid || volume || price)){
+            overFlowData[rowOverFlow] = tableData.trades[rowOverFlow];
+            rowOverFlow++;
+          }
+
+          return(perimeterCheck && (info!="Search" || rageUpdatedAt || uuid || volume || price))
+        })
+
+        this.setState({
+          filteredTableData:filteredArray,
+          tableSemiFilteredData:overFlowData
+        })
+      }
     }
   }
 
 
   render() {
-    const {pageMenu,filterElement,anchorFilt,anchorDrop,rowNumber,filteredTableData} = this.state;
+    const {pageNumber,filterElement,anchorFilt,anchorDrop,rowNumber,filteredTableData,tableSemiFilteredData} = this.state;
+
     return(
       <div className="TableContainer">
         <NavLink to="/withdraws"><Button variant="contained" size="large" color="primary" className="navBTN_next">Withdraws<i className="material-icons">navigate_next</i></Button></NavLink>  
@@ -186,11 +231,10 @@ class Trades extends Component {
 
             {/* // ------ // Menu Filter Pop-up*/}
             <Menu id="simple-menus" anchorEl={anchorFilt} open={Boolean(anchorFilt)} onClose={this.handleClose}>
-              <MenuItem onClick={()=>this.handleClose("ASK")}>Side - ASK</MenuItem>
-              <MenuItem onClick={()=>this.handleClose("BID")}>Side - BID</MenuItem>
-              <MenuItem onClick={()=>this.handleClose("BTC/AUD")}>TSP - BTC/AUD</MenuItem>
-              <MenuItem onClick={()=>this.handleClose("ETH/AUD")}>TSP - ETH/AUD</MenuItem>
-              <MenuItem onClick={()=>this.handleClose("ETH/BTC")}>TSP - ETH/BTC</MenuItem>
+              <MenuItem onClick={()=>this.handleClose("ASK")}>ASK</MenuItem>
+              <MenuItem onClick={()=>this.handleClose("BTC/AUD & ETH/AUD")}>{"BTC/AUD & ETH/AUD"}</MenuItem>
+              <MenuItem onClick={()=>this.handleClose("ETH/AUD")}>ETH/AUD</MenuItem>
+              <MenuItem onClick={()=>this.handleClose("ETH/BTC")}>ETH/BTC</MenuItem>
             </Menu>
           </section>  
 
@@ -227,12 +271,13 @@ class Trades extends Component {
                       </Button>  
                       <Menu anchorEl={anchorDrop} open={Boolean(anchorDrop)} onClose={this.handleClose} >
                         <MenuItem onClick={()=>this.handleClose(5)}>5</MenuItem>
-                        <MenuItem onClick={()=>this.handleClose(25)}>25</MenuItem>
-                        <MenuItem onClick={()=>this.handleClose(50)}>50</MenuItem>
+                        <MenuItem onClick={()=>this.handleClose(10)}>10</MenuItem>
+                        <MenuItem onClick={()=>this.handleClose(20)}>20</MenuItem>
+                        <MenuItem onClick={()=>this.handleClose(40)}>40</MenuItem>
                       </Menu>
                     </div>  
 
-                    <span className="pageSize">1-13 of 13</span>
+                    <span className="pageSize">{pageNumber+" - "+rowNumber} of {Math.ceil(tableSemiFilteredData.length/rowNumber)}</span>
                     <Fab className="Prov" onClick={()=>this.handlePagination("Prov")}><IconProv/></Fab>
                     <Fab className="Next" onClick={()=>this.handlePagination("Next")}><IconNext/></Fab>
 
