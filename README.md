@@ -9,7 +9,8 @@ A react web app that displays data from API dynamically on a table
 ### Alternatively follow instructions to run locally
 <li>Navigate to <a href="https://github.com/TheRigidNinja/Dynamic-Table">[ here ] </a>then download Repo / unzip if need be.</li>
 <li><code>cd</code> into the build directory</li>
-<li>Type <code>serve -s build</code> This should start running the app locally on <code>http://localhost:5000</code> </li>
+<li>Type <code>python -m SimpleHTTPServer 8080</code> This should start running the app locally on <code>localhost:8080/index.html</code></li><i>you need to have python installed.</i>
+
 
 
 # Total time spent was: 24:40h
